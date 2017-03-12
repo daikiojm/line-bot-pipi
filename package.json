@@ -1,0 +1,24 @@
+{
+  "name": "line-bot-pipi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daikiojm/line-bot-pipi.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/daikiojm/line-bot-pipi/issues"
+  },
+  "homepage": "https://github.com/daikiojm/line-bot-pipi#readme",
+  "dependencies": {
+    "https": "^1.0.0",
+    "request": "^2.81.0"
+  }
+}
