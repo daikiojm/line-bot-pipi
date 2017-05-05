@@ -20,10 +20,7 @@ service: line-bot-pipi
 provider:
   name: aws
   runtime: nodejs4.3
-
-# you can overwrite defaults here
-#  stage: dev
-#  region: us-east-1
+  region: us-east-1
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
@@ -92,6 +89,7 @@ functions:
 #      variable2: value2
     environment:
       CHANNEL_ACCESS_TOKEN: ${env:CHANNEL_ACCESS_TOKEN}
+      APIKEY: ${env:APIKEY}
 
 # you can add CloudFormation resource templates here
 #resources:

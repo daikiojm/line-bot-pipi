@@ -1,6 +1,7 @@
 'use strict';
 
 const https = require('https');
+const rp = require("request-promise");
 
 let send = (data, callback) => {
   let body = JSON.stringify(data);
@@ -24,24 +25,47 @@ let send = (data, callback) => {
 }
 
 exports.linebot = (event, context, callback) => {
-  console.log(event.body);
-  let body = JSON.parse(event.body);
-  let result = body.events && body.events[0];
+  // parse line msg body
+  var body = JSON.parse(event.body);
+  console.log(body.events[0].source);
+  console.log(body.events[0].message);
+  var result = body.events && body.events[0];
   if (result) {
-    let content = body.events[0] || {};
-    let message = {
-        "replyToken":result.replyToken,
-        "messages": [
-          {
-            "type": "text",
-            "text": content.message.text
-          }
-        ]
-      };
-      send(message, () => {
-      callback(null, {statusCode: 200, body: JSON.stringify({})});
-    });
-  } else {
-    callback(null, {statusCode: 400, body: JSON.stringify({})});
-  }
+    var content = body.events[0] || {};
+    // call zatudan api
+    var ctx = content.source.userId;
+    var options = { method: 'POST',
+      url: 'https://api.apigw.smt.docomo.ne.jp/dialogue/v1/dialogue',
+      qs: { APIKEY: process.env.APIKEY },
+      headers:
+       { 'cache-control': 'no-cache',
+         'content-type': 'application/json' },
+      body: { utt: content.message.txt, context: ctx, t: 20 },
+      json: true };
+
+    // promise
+    rp(options)
+      .then((parsedBody) => {
+        console.log(parsedBody);
+        // make reply text
+        var reply_text = parsedBody.utt || "get message error.";
+        var message = {
+          "replyToken":result.replyToken,
+          "messages": [
+            {
+              "type": "text",
+              "text": reply_text
+            }
+          ]
+        };
+        send(message, () => {
+        callback(null, {statusCode: 200, body: JSON.stringify({})});
+      });
+    })
+      .catch((err) => {
+        console.log(err);
+      });
+    } else {
+      callback(null, {statusCode: 400, body: JSON.stringify({})});
+    }
 };
