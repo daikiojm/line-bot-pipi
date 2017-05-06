@@ -6,17 +6,6 @@ provider:
   name: aws
   region: us-east-1
   runtime: nodejs6.10
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - dynamodb:DescribeTable
-        - dynamodb:Query
-        - dynamodb:Scan
-        - dynamodb:GetItem
-        - dynamodb:PutItem
-        - dynamodb:UpdateItem
-        - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:us-east-1:*:*"
 
 functions:
   linebot:
@@ -30,19 +19,3 @@ functions:
     environment:
       CHANNEL_ACCESS_TOKEN: ${env:CHANNEL_ACCESS_TOKEN}
       APIKEY: ${env:APIKEY}
-
-resources:  # CloudFormation template syntax
-  Resources:
-    usersTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: usersTable
-        AttributeDefinitions:
-          - AttributeName: email
-            AttributeType: S
-        KeySchema:
-          - AttributeName: email
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1

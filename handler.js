@@ -26,15 +26,15 @@ let send = (data, callback) => {
 
 exports.linebot = (event, context, callback) => {
   // parse line msg body
-  var body = JSON.parse(event.body);
+  let body = JSON.parse(event.body);
   console.log(body.events[0].source);
   console.log(body.events[0].message);
-  var result = body.events && body.events[0];
+  let result = body.events && body.events[0];
   if (result) {
-    var content = body.events[0] || {};
+    let content = body.events[0] || {};
     // call zatudan api
-    var ctx = content.source.userId;
-    var options = { method: 'POST',
+    let ctx = content.source.userId;
+    let options = { method: 'POST',
       url: 'https://api.apigw.smt.docomo.ne.jp/dialogue/v1/dialogue',
       qs: { APIKEY: process.env.APIKEY },
       headers:
@@ -48,8 +48,8 @@ exports.linebot = (event, context, callback) => {
       .then((parsedBody) => {
         console.log(parsedBody);
         // make reply text
-        var reply_text = parsedBody.utt || "get message error.";
-        var message = {
+        let reply_text = parsedBody.utt || "get message error.";
+        let message = {
           "replyToken":result.replyToken,
           "messages": [
             {
