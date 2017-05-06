@@ -40,7 +40,7 @@ exports.linebot = (event, context, callback) => {
       headers:
        { 'cache-control': 'no-cache',
          'content-type': 'application/json' },
-      body: { utt: content.message.txt, context: ctx, t: 20 },
+      body: { utt: content.message.text, context: ctx, t: 20 },
       json: true };
 
     // promise
